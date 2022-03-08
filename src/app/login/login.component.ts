@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '@supabase/supabase-js';
+import { Logger } from 'src/classes/logger.class';
+import { AuthService } from '../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +10,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  user: User | null = null;
+  private logger = new Logger('Login-Component');
+
+  constructor(
+    private auth: AuthService
+  ) {
+    this.auth.$user.subscribe(user => {
+      this.logger.log(`user = `, user);
+      this.user = user;
+    });
+
+  }
 
   ngOnInit(): void {
+
+  }
+
+  login() {
+    this.auth.login();
+  }
+
+  logout() {
+    this.auth.logout();
   }
 
 }
