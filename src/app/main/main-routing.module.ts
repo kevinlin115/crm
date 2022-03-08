@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainComponent } from './main/main.component';
+import { MainComponent } from './components/main/main.component';
 
 const routes: Routes = [
   {
@@ -9,19 +9,19 @@ const routes: Routes = [
     children: [
       {
         path: 'customer',
-        loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule)
+        loadChildren: () => import('./modules/customer/customer.module').then(m => m.CustomerModule)
       },
       {
         path: 'diagram',
-        loadChildren: () => import('./diagram/diagram.module').then(m => m.DiagramModule)
+        loadChildren: () => import('./modules/diagram/diagram.module').then(m => m.DiagramModule)
       },
       {
         path: 'pos',
-        loadChildren: () => import('./pos/pos.module').then(m => m.PosModule)
+        loadChildren: () => import('./modules/pos/pos.module').then(m => m.PosModule)
       },
       {
         path: 'product',
-        loadChildren: () => import('./product/product.module').then(m => m.ProductModule)
+        loadChildren: () => import('./modules/product/product.module').then(m => m.ProductModule)
       },
       {
         path: '**',
