@@ -19,8 +19,13 @@
                  fixedTopGap="56">
       <mat-nav-list>
         <a mat-list-item
-           routerLink="."
-           *ngFor="let nav of [1,2,3]">{{nav}}</a>
+           [routerLink]="navItem.routerLink"
+           *ngFor="let navItem of NavList">
+          <mat-icon>{{ navItem.icon }}</mat-icon>
+          <span class="nav-item-label">
+            {{ navItem.label }}
+          </span>
+        </a>
       </mat-nav-list>
     </mat-sidenav>
 

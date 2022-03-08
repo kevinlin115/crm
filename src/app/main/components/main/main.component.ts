@@ -1,6 +1,6 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef } from '@angular/core';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { NavList } from './main';
 
 @Component({
   selector: 'app-main',
@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
+
+  get NavList() { return NavList; }
 
   mobileQuery: MediaQueryList;
 
