@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '@core/services/auth.service';
+import { Logger } from '@src/classes/logger.class';
 import { User } from '@supabase/supabase-js';
-import { Logger } from 'src/classes/logger.class';
-import { AuthService } from '../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
