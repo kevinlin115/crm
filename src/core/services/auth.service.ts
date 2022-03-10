@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Logger } from '@src/classes/logger.class';
-import { SupabasePublicKey, SupabaseUrl } from '@src/constants/supabase.constant';
+import { environment } from '@src/environments/environment';
 import { createClient, User } from '@supabase/supabase-js';
 import { BehaviorSubject, from } from 'rxjs';
 
@@ -18,17 +18,19 @@ export class AuthService {
   constructor(
     private router: Router
   ) {
-    this.supabase = createClient(SupabaseUrl, SupabasePublicKey);
+    this.supabase = createClient(environment.SupabaseUrl, environment.SupabasePublicKey);
     this.checkUser();
-    window.addEventListener('hashchange', () => {
-      this.checkUser();
-    });
   }
 
   login() {
-    from(this.supabase.auth.signIn({
-      provider: 'github'
-    })).subscribe(signInRes => {
+    from(this.supabase.auth.signIn(
+      {
+        provider: 'github'
+      },
+      {
+        redirectTo: `${window.location.origin}${environment.production ? '/crm' : ''}/callback`
+      }
+    )).subscribe(signInRes => {
       this.logger.log(`signInRes = `, signInRes);
       this.$user.next(signInRes.user);
     });
@@ -40,11 +42,13 @@ export class AuthService {
     this.router.navigate(['/']);
   }
 
-  private checkUser() {
+  checkUser() {
     this.$user.next(this.supabase.auth.user());
     this.logger.log(`user = `, this.$user.value);
     if (this.$user.value) {
-      this.router.navigate(['/', 'main']);
+      setTimeout(() => {
+        this.router.navigate(['/', 'main']);
+      });
     }
   }
 

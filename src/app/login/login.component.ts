@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Logger } from '@src/classes/logger.class';
 import { AuthService } from '@core/services/auth.service';
 import { User } from '@supabase/supabase-js';
+import { environment } from '@src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -9,6 +10,8 @@ import { User } from '@supabase/supabase-js';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+
+  get environment() { return environment; }
 
   user: User | null = null;
   private logger = new Logger('Login-Component');
