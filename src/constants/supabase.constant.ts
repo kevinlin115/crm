@@ -1,3 +1,3 @@
-export const SupabasePublicKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0Mzc3NzgwMiwiZXhwIjoxOTU5MzUzODAyfQ.D_2kUCl6h2aVQtQawahkeEnavLTQ62Nb91uokOIJbYc' as const;
+export const SupabasePublicKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndrdXJ4bGVydGlldmFhZXNleGJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDY2NTc0NDYsImV4cCI6MTk2MjIzMzQ0Nn0.asuKI8uNTuNTQSbko6552j4cDsi8lEuKT2opCH1p4JM' as const;
 
-export const SupabaseUrl = 'https://dcmnyibopdkpmtstahyx.supabase.co' as const;
+export const SupabaseUrl = 'https://wkurxlertievaaesexbc.supabase.co' as const;

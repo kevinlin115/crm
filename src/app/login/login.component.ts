@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '@core/services/auth.service';
 import { Logger } from '@src/classes/logger.class';
+import { AuthService } from '@core/services/auth.service';
 import { User } from '@supabase/supabase-js';
 
 @Component({

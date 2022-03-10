@@ -1,6 +1,6 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from '@src/core/services/auth.service';
 import { NavList } from './main';
 
 @Component({

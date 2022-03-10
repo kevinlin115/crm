@@ -8,7 +8,7 @@
         "./*"
       ],
       "@core/*": [
-        "app/core/*"
+        "core/*"
       ]
     },
     "outDir": "./dist/out-tsc",
