@@ -10,20 +10,37 @@ import { NavList } from './main';
 })
 export class MainComponent implements OnInit {
 
+  // Media Query
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
+
+  // User
+  private user;
+
+  // Side Nav
   get NavList() { return NavList; }
 
-  mobileQuery: MediaQueryList;
-
-  private _mobileQueryListener: () => void;
+  // UI
+  ui = {
+    user: {
+      email: '',
+      avatarUrl: ''
+    }
+  };
 
   constructor(
     private authService: AuthService,
-    changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher,
+    private changeDetectorRef: ChangeDetectorRef,
+    private media: MediaMatcher,
   ) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    // Media Query
+    this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => this.changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+
+    // User
+    this.user = this.authService.$user.value;
+    this.initUserUi();
   }
 
   ngOnInit(): void {
@@ -32,6 +49,11 @@ export class MainComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  private initUserUi() {
+    this.ui.user.email = this.user?.email ?? '';
+    this.ui.user.avatarUrl = this.user?.user_metadata['avatar_url'] ?? '';
   }
 
 }

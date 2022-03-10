@@ -13,6 +13,21 @@
     <span class="main-spacer"></span>
 
 
+    <!-- Current User -->
+    <mat-chip-list aria-label="Dog selection">
+      <mat-chip>
+        <mat-chip-avatar *ngIf="ui.user.avatarUrl else personIcon">
+          <img class="main-avatar"
+               [src]="ui.user.avatarUrl" />
+        </mat-chip-avatar>
+        <ng-template #personIcon>
+          <mat-icon>person</mat-icon>
+        </ng-template>
+        {{ ui.user.email }}
+      </mat-chip>
+    </mat-chip-list>
+
+    <!-- Logout -->
     <button (click)="logout()"
             mat-button
             color="primary">
@@ -41,8 +56,8 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
-    <button mat-button
-            color="primary">Primary</button>
+      <button mat-button
+              color="primary">Primary</button>
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
