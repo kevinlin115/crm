@@ -18,6 +18,10 @@ h1.main-app-name {
   margin-left: 8px;
 }
 
+.main-spacer {
+  flex: 1 1 auto;
+}
+
 .main-sidenav-container {
   /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
      causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
