@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { CoreModule } from '@src/core/core.module';
 import { MaterialModules } from '.';
 import { MainComponent } from './components/main/main.component';
 import { MainRoutingModule } from './main-routing.module';
@@ -9,7 +9,7 @@ import { MainRoutingModule } from './main-routing.module';
     MainComponent,
   ],
   imports: [
-    CommonModule,
+    CoreModule,
     MainRoutingModule,
     ...MaterialModules
   ]

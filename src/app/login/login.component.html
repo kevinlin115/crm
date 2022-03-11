@@ -1,3 +1,12 @@
-<button (click)="login()">login</button>
-<button (click)="logout()">logout</button>
-{{environment|json}}
+<div fxLayout="column"
+     fxLayoutAlign="center center"
+     class="login-container">
+
+  <h1>歡迎來到 CRM</h1>
+  <!-- Login -->
+  <button (click)="login()"
+          mat-raised-button>
+    <img src="https://img.icons8.com/ios-filled/30/000000/github.png" />
+    透過 GitHub 登入
+  </button>
+</div>

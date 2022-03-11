@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { CoreModule } from '@src/core/core.module';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductRoutingModule } from './product-routing.module';
 
@@ -8,7 +8,7 @@ import { ProductRoutingModule } from './product-routing.module';
     ProductListComponent
   ],
   imports: [
-    CommonModule,
+    CoreModule,
     ProductRoutingModule
   ]
 })
