@@ -44,14 +44,8 @@ export class AuthService {
   }
 
   checkUser() {
-    console.error(`check user`)
     this.$user.next(this.supabase.auth.user());
     this.logger.log(`user = `, this.$user.value);
-    // if (this.$user.value) {
-    //   setTimeout(() => {
-    //     this.router.navigate(['/', 'main']);
-    //   });
-    // }
   }
 
 }
