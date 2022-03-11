@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '@src/core/services/auth.service';
 
 @Component({
   selector: 'app-callback',
@@ -7,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CallbackComponent implements OnInit {
 
-  constructor() {
+  constructor(
+    private authService: AuthService
+  ) {
+    window.addEventListener('hashchange', () => {
+      this.authService.checkUser();
+    });
   }
 
   ngOnInit(): void {
