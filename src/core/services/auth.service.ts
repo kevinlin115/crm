@@ -12,7 +12,7 @@ export class AuthService {
 
   $user = new BehaviorSubject<User | null>(null);
 
-  private supabase;
+  supabase;
   private logger = new Logger('Auth-Service');
 
   constructor(
