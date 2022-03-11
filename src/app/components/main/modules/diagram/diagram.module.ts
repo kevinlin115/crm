@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CoreModule } from '@src/core/core.module';
+import { CoreModule } from '@core/core.module';
 import { DiagramHomeComponent } from './diagram-home/diagram-home.component';
 import { DiagramRoutingModule } from './diagram-routing.module';
 

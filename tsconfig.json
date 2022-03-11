@@ -7,11 +7,14 @@
       "@src/*": [
         "./*"
       ],
+      "@classes/*": [
+        "app/classes/*"
+      ],
       "@core/*": [
-        "core/*"
+        "app/core/*"
       ],
       "@modules/*": [
-        "app/main/modules/*"
+        "app/components/main/modules/*"
       ]
     },
     "outDir": "./dist/out-tsc",

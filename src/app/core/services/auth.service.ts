@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Logger } from '@src/classes/logger.class';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Logger } from '@classes/logger.class';
 import { environment } from '@src/environments/environment';
 import { createClient, User } from '@supabase/supabase-js';
 import { BehaviorSubject, from } from 'rxjs';
@@ -16,7 +16,8 @@ export class AuthService {
   private logger = new Logger('Auth-Service');
 
   constructor(
-    private router: Router
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
     this.supabase = createClient(environment.SupabaseUrl, environment.SupabasePublicKey);
     this.checkUser();
@@ -43,13 +44,14 @@ export class AuthService {
   }
 
   checkUser() {
+    console.error(`check user`)
     this.$user.next(this.supabase.auth.user());
     this.logger.log(`user = `, this.$user.value);
-    if (this.$user.value) {
-      setTimeout(() => {
-        this.router.navigate(['/', 'main']);
-      });
-    }
+    // if (this.$user.value) {
+    //   setTimeout(() => {
+    //     this.router.navigate(['/', 'main']);
+    //   });
+    // }
   }
 
 }

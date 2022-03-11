@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Logger } from '@classes/logger.class';
 import { ProductService } from '@modules/product/product.service';
-import { Logger } from '@src/classes/logger.class';
 
 @Component({
   selector: 'app-product-list',
