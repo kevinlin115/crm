@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '@core/guards/auth.guard';
-import { CallbackComponent } from './components/callback/callback.component';
-import { LoginComponent } from './components/login/login.component';
-import { GuestGuard } from './core/guards/guest.guard';
+import { AuthGuard, GuestGuard } from '@core/guards';
+import { CallbackComponent } from './components/callback';
+import { LoginComponent } from './components/login';
 
 const routes: Routes = [
   {

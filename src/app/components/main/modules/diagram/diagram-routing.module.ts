@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DiagramHomeComponent } from './diagram-home/diagram-home.component';
+import { DiagramHomeComponent } from './diagram-home';
 
 const routes: Routes = [
   {

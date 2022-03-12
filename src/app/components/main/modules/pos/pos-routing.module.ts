@@ -1,6 +1,6 @@
-import { PosHomeComponent } from './pos-home/pos-home.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PosHomeComponent } from './pos-home';
 
 const routes: Routes = [
   {

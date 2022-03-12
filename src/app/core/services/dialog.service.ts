@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ProductDetailData, ProductDetailDialogComponent } from '@main/shared-components/product-detail-dialog';
-import { ProductCategoryDetailData } from './../../components/main/shared-components/product-category-detail-dialog/index';
-import { ProductCategoryDetailDialogComponent } from './../../components/main/shared-components/product-category-detail-dialog/product-category-detail-dialog.component';
+import {
+  ProductCategoryDetailData, ProductCategoryDetailDialogComponent,
+  ProductDetailData, ProductDetailDialogComponent
+} from '@main/shared-components';
 
 @Injectable({
   providedIn: 'root'

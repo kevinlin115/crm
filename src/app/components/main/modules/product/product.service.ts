@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from '@core/services';
 import { from } from 'rxjs';
 
 @Injectable({

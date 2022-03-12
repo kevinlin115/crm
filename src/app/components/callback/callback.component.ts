@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Logger } from '@classes/logger.class';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from '@core/services';
 
 @Component({
   selector: 'app-callback',

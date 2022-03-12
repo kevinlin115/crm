@@ -1,7 +1,7 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AuthService } from '@core/services/auth.service';
-import { NavList } from './main';
+import { AuthService } from '@core/services';
+import { NavList } from '.';
 
 @Component({
   selector: 'app-main',

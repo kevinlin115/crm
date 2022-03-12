@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Logger } from '@classes/logger.class';
-import { DialogService } from '@core/services/dialog.service';
+import { DialogService } from '@core/services';
 import { Mode } from '@interfaces/mode.interface';
 import { ProductService } from '@modules/product/product.service';
 import { ProductCategoryDetailData } from '@shared-components/product-category-detail-dialog/index';
