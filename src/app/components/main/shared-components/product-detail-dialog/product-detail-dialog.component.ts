@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Logger } from '@classes/logger.class';
+import { ModeText } from '@interfaces/mode.interface';
 import { ProductDetailData } from '.';
 
 @Component({
@@ -9,6 +10,8 @@ import { ProductDetailData } from '.';
   styleUrls: ['./product-detail-dialog.component.scss']
 })
 export class ProductDetailDialogComponent implements OnInit {
+
+  get ModeText() { return ModeText; }
 
   private logger = new Logger('Product-Detail-Dialog');
 

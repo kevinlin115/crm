@@ -4,9 +4,6 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
-      "@src/*": [
-        "./*"
-      ],
       "@classes/*": [
         "app/classes/*"
       ],
@@ -15,6 +12,9 @@
       ],
       "@interfaces/*": [
         "app/interfaces/*"
+      ],
+      "@main/*": [
+        "app/components/main/*"
       ],
       "@modules/*": [
         "app/components/main/modules/*"

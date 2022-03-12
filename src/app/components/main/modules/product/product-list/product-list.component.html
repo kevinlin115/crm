@@ -6,11 +6,17 @@
 <div class="module-container">
 
   <mat-tab-group>
+
+    <!-- Product -->
     <mat-tab>
+
+      <!-- Label -->
       <ng-template mat-tab-label>
         <mat-icon class="tab-icon">thumb_up</mat-icon>
         產品
       </ng-template>
+
+      <!-- Content Header -->
       <div fxLayout="row"
            fxLayoutAlign="space-between end"
            [style.margin]="'1rem 0'">
@@ -24,16 +30,39 @@
           新增產品
         </button>
       </div>
-
       <mat-divider></mat-divider>
+
+      <!-- Content -->
+
     </mat-tab>
 
+    <!-- Product Category -->
     <mat-tab>
+
+      <!-- Label -->
       <ng-template mat-tab-label>
         <mat-icon class="tab-icon">category</mat-icon>
         產品類別
       </ng-template>
-      Content 2
+
+      <!-- Content Header -->
+      <div fxLayout="row"
+           fxLayoutAlign="space-between end"
+           [style.margin]="'1rem 0'">
+        <h2 [style.margin]="0">
+          產品類別列表
+        </h2>
+        <button type="button"
+                mat-raised-button
+                color="primary"
+                (click)="showAddProductCategory();">
+          新增產品類別
+        </button>
+      </div>
+      <mat-divider></mat-divider>
+
+      <!-- Content -->
+
     </mat-tab>
 
   </mat-tab-group>

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Logger } from '@classes/logger.class';
-import { environment } from '@src/environments/environment';
 import { createClient, User } from '@supabase/supabase-js';
+import { environment } from 'environments/environment';
 import { BehaviorSubject, from } from 'rxjs';
 
 @Injectable({
