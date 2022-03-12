@@ -5,16 +5,37 @@
 
 <div class="module-container">
 
-  <div fxLayout="row"
-       fxLayoutAlign="space-between end"
-       [style.margin-bottom]="'1rem'">
-    <h2 [style.margin]="0">產品列表</h2>
-    <a mat-raised-button
-       color="primary"
-       [routerLink]="['../add']">新增產品</a>
-  </div>
+  <mat-tab-group>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">thumb_up</mat-icon>
+        產品
+      </ng-template>
+      <div fxLayout="row"
+           fxLayoutAlign="space-between end"
+           [style.margin]="'1rem 0'">
+        <h2 [style.margin]="0">
+          產品列表
+        </h2>
+        <button type="button"
+                mat-raised-button
+                color="primary"
+                (click)="showAddProduct();">
+          新增產品
+        </button>
+      </div>
 
-  <mat-divider></mat-divider>
+      <mat-divider></mat-divider>
+    </mat-tab>
 
-  5
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">category</mat-icon>
+        產品類別
+      </ng-template>
+      Content 2
+    </mat-tab>
+
+  </mat-tab-group>
+
 </div>

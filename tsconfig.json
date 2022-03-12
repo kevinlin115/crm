@@ -15,6 +15,9 @@
       ],
       "@modules/*": [
         "app/components/main/modules/*"
+      ],
+      "@shared-components/*": [
+        "app/components/main/shared-components/*"
       ]
     },
     "outDir": "./dist/out-tsc",
