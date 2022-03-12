@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from '@core/services';
 import { from } from 'rxjs';
+import { AuthService } from '.';
 
 @Injectable({
   providedIn: 'root'
@@ -47,4 +47,9 @@ export class ProductService {
       .eq('id', '18'))
   }
 
+  getProductCategories() {
+    return from(this.supabase
+      .from('ProductCategory')
+      .select('*'));
+  }
 }

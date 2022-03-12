@@ -1,1 +1,33 @@
-<p>product-category-detail-dialog works!</p>
+<div fxLayout="row"
+     fxLayoutAlign="start center">
+  {{ModeText[data.mode]}}產品類別
+  <mat-progress-spinner *ngIf="ui.loadingCategories"
+                        [style.margin-left]="'4px'"
+                        [style.width]="'20px'"
+                        [diameter]="20"
+                        [mode]="'indeterminate'"></mat-progress-spinner>
+</div>
+{{form.valid}}
+<form [formGroup]="form"
+      class="example-form">
+  <mat-form-field class="w-100"
+                  appearance="standard">
+    <mat-label>產品類別</mat-label>
+    <input type="text"
+           matInput
+           [formControlName]="'type'"
+           placeholder="請輸入產品類別">
+  </mat-form-field>
+
+  <div fxLayout="row"
+       fxLayoutAlign="end center">
+    <button type="button"
+            (click)="confirm();"
+            mat-raised-button
+            [disabled]="form.invalid || ui.loadingCategories"
+            [color]="'primary'">
+      <i class="material-icons">check</i>
+      確認
+    </button>
+  </div>
+</form>
