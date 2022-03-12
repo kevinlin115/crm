@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { Logger } from '@classes/logger.class';
+import { DialogService } from '@core/services/dialog.service';
 import { ProductService } from '@modules/product/product.service';
-import { ProductDetailComponent } from '@shared-components/product-detail/product-detail.component';
+import { ProductDetailData } from '@shared-components/product-detail-dialog';
 
 @Component({
   selector: 'app-product-list',
@@ -14,7 +14,7 @@ export class ProductListComponent implements OnInit {
   private logger = new Logger('Product-List');
 
   constructor(
-    private dialog: MatDialog,
+    private dialogService: DialogService,
     private productService: ProductService,
   ) { }
 
@@ -22,11 +22,12 @@ export class ProductListComponent implements OnInit {
   }
 
   showAddProduct() {
-    this.logger.log(`display add new product dialog`);
-    const dialogRef = this.dialog.open(ProductDetailComponent, {
-      width: '250px',
-      data: { a: 1 },
-    });
+    const data: ProductDetailData = {
+      mode: 'add',
+      label: '',
+      value: 0
+    }
+    const dialogRef = this.dialogService.getProductDetailDialog(data);
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');

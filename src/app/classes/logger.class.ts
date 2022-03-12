@@ -14,6 +14,10 @@ export class Logger {
     console.error(`[${this.name}] `, ...args);
   }
 
+  /**
+   * Constructor Function
+   * @param name Example-Dash-Camel
+   */
   constructor(name: string) {
     this.name = name;
   }
