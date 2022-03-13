@@ -18,8 +18,12 @@
     <mat-label>產品類別</mat-label>
     <input type="text"
            matInput
-           [formControlName]="'type'"
+           [formControlName]="PCColumn.type"
            placeholder="請輸入產品類別">
+    <mat-error *ngIf="form.controls[PCColumn.type].hasError('TypeExisted')">
+      產品類別 <strong>{{ form.value[PCColumn.type] }} </strong>已存在
+    </mat-error>
+
   </mat-form-field>
 
   <div fxLayout="row"

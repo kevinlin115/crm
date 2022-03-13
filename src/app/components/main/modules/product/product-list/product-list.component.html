@@ -62,7 +62,25 @@
       <mat-divider></mat-divider>
 
       <!-- Content -->
+      <div *ngIf="ui.loadingCategories else TplCategoryList"
+           fxLayout="row"
+           fxLayoutAlign="center center"
+           [style.padding]="'1rem'">
 
+        <mat-progress-spinner [mode]="'indeterminate'"></mat-progress-spinner>
+      </div>
+
+      <ng-template #TplCategoryList>
+        <div cdkDropList
+             class="example-list"
+             (cdkDropListDropped)="'drop($event)'">
+          <div class="example-box"
+               *ngFor="let category of categoryList"
+               cdkDrag>
+            {{ category.type }}
+          </div>
+        </div>
+      </ng-template>
     </mat-tab>
 
   </mat-tab-group>

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Logger } from '@classes/logger.class';
 import { ProductCategory } from '@classes/product-category.class';
@@ -17,6 +17,7 @@ import { ProductCategoryDetailData } from './index';
 export class ProductCategoryDetailDialogComponent implements OnInit {
 
   get ModeText() { return ModeText; }
+  get PCColumn() { return PCColumn; }
 
   private logger = new Logger('Product-Category-Detail-Dialog');
   form;
@@ -39,7 +40,7 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
     this.logger.log(`data = `, this.data);
 
     this.form = this.fb.group({
-      type: new FormControl('', [Validators.required])
+      type: new FormControl('', [Validators.required, this.typeValidator()])
     });
 
     this.getCategories();
@@ -78,7 +79,6 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
     const api = this.data.mode === Mode.Add ?
       this.productService.addProductCategoriey(this.category) :
       this.productService.updateProductCategoriey(this.category);
-
     return api.pipe(
       tap(() => {
         this.ui.submitting = false;
@@ -90,6 +90,17 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
         throw (err);
       })
     )
+  }
+
+  /** 產品類別名稱 Validator */
+  private typeValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (this.data.mode === Mode.Add) {
+        const existingTypes = this.categories.map(item => item[PCColumn.type]);
+        return existingTypes.indexOf(control.value) >= 0 ? { TypeExisted: control.value } : null;
+      }
+      return null;
+    };
   }
 
 }

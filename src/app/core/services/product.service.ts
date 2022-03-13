@@ -51,8 +51,14 @@ export class ProductService {
 
   getProductCategories() {
     return from(this.supabase
-      .from('ProductCategory')
-      .select('*'));
+      .from(Table.ProductCategory)
+      .select('*')
+      .order(
+        PCColumn.order,
+        {
+          ascending: true
+        }
+      ));
   }
 
   addProductCategoriey(productCategory: ProductCategory) {
