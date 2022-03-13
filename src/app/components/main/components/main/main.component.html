@@ -16,11 +16,11 @@
     <!-- Current User -->
     <mat-chip-list aria-label="Dog selection">
       <mat-chip>
-        <mat-chip-avatar *ngIf="ui.user.avatarUrl else personIcon">
+        <mat-chip-avatar *ngIf="ui.user.avatarUrl else PersonIcon">
           <img class="main-avatar"
                [src]="ui.user.avatarUrl" />
         </mat-chip-avatar>
-        <ng-template #personIcon>
+        <ng-template #PersonIcon>
           <mat-icon>person</mat-icon>
         </ng-template>
         {{ ui.user.email }}
@@ -47,7 +47,8 @@
         <a mat-list-item
            [routerLink]="navItem.routerLink"
            [routerLinkActive]="'active'"
-           *ngFor="let navItem of NavList">
+           *ngFor="let navItem of NavList"
+           (click)="Sidenav.toggle();">
           <mat-icon>{{ navItem.icon }}</mat-icon>
           <span class="nav-item-label">
             {{ navItem.label }}

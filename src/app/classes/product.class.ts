@@ -1,5 +1,5 @@
 import { PColumn } from '@enums/.';
-import { SharedColumn } from ".";
+import { SharedColumn } from './shared-column.class';
 
 export class Product extends SharedColumn {
   [PColumn.label] = '';

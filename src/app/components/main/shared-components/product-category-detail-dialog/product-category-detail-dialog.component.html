@@ -1,6 +1,6 @@
 <div fxLayout="row"
      fxLayoutAlign="start center">
-  <h2>
+  <h2 [style.margin-bottom]="'0px'">
     {{ModeText[data.mode]}}產品類別
   </h2>
   <mat-progress-spinner *ngIf="ui.loadingCategories"
@@ -9,8 +9,9 @@
                         [diameter]="20"
                         [mode]="'indeterminate'"></mat-progress-spinner>
 </div>
-{{form.valid}}
+
 <form [formGroup]="form"
+      (ngSubmit)="onSubmit();"
       class="example-form">
   <mat-form-field class="w-100"
                   appearance="standard">
@@ -23,12 +24,17 @@
 
   <div fxLayout="row"
        fxLayoutAlign="end center">
-    <button type="button"
-            (click)="confirm();"
+    <button type="submit"
             mat-raised-button
-            [disabled]="form.invalid || ui.loadingCategories"
+            [disabled]="form.invalid || ui.loadingCategories || ui.submitting"
             [color]="'primary'">
-      <i class="material-icons">check</i>
+      <i *ngIf="!ui.submitting else TplNotSubmitting"
+         class="material-icons">check</i>
+      <ng-template #TplNotSubmitting>
+        <mat-progress-spinner [diameter]="20"
+                              [style.display]="'inline-block'"
+                              [mode]="'indeterminate'"></mat-progress-spinner>
+      </ng-template>
       確認
     </button>
   </div>

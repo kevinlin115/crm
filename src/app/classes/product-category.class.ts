@@ -1,5 +1,5 @@
 import { PCColumn } from '@enums/.';
-import { SharedColumn } from ".";
+import { SharedColumn } from './shared-column.class';
 
 export class ProductCategory extends SharedColumn {
   [PCColumn.order] = 0;
