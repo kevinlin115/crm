@@ -1,6 +1,8 @@
 <div fxLayout="row"
      fxLayoutAlign="start center">
-  {{ModeText[data.mode]}}產品類別
+  <h2>
+    {{ModeText[data.mode]}}產品類別
+  </h2>
   <mat-progress-spinner *ngIf="ui.loadingCategories"
                         [style.margin-left]="'4px'"
                         [style.width]="'20px'"
