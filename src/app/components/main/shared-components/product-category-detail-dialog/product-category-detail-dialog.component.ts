@@ -23,7 +23,7 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
   form;
 
   private category = new ProductCategory();
-  private categories = [] as ProductCategory[];
+  private categoryList = [] as ProductCategory[];
 
   ui = {
     loadingCategories: false,
@@ -55,7 +55,7 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
     this.ui.submitting = true;
     this.category[PCColumn.type] = this.form.value[PCColumn.type];
     if (this.data.mode === Mode.Add) {
-      this.category[PCColumn.order] = this.categories.length;
+      this.category[PCColumn.order] = this.categoryList.length;
     }
     this.confirmApi().subscribe();
   }
@@ -67,7 +67,7 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
       this.ui.loadingCategories = false;
       this.ui.gotCategories = true;
       this.logger.log(`Get all product Categories res = `, res);
-      this.categories = res.body || [];
+      this.categoryList = res.body || [];
     }, (err) => {
       this.ui.loadingCategories = false;
       this.logger.error(`Get all product Categories err = `, err);
@@ -96,7 +96,7 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
   private typeValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (this.data.mode === Mode.Add) {
-        const existingTypes = this.categories.map(item => item[PCColumn.type]);
+        const existingTypes = this.categoryList.map(item => item[PCColumn.type]);
         return existingTypes.indexOf(control.value) >= 0 ? { TypeExisted: control.value } : null;
       }
       return null;

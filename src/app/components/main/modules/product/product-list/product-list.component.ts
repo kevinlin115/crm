@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { Product, ProductCategory } from '@classes/.';
 import { Logger } from '@classes/logger.class';
@@ -5,7 +6,7 @@ import { DialogService, ProductService } from '@core/services';
 import { Mode } from '@interfaces/mode.interface';
 import { ProductCategoryDetailData } from '@shared-components/product-category-detail-dialog/index';
 import { ProductDetailData } from '@shared-components/product-detail-dialog';
-import { tap, catchError } from 'rxjs';
+import { catchError, tap } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -29,7 +30,7 @@ export class ProductListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+    this.getProductList();
     this.getCategoryList();
   }
 
@@ -79,36 +80,8 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  getProducts() {
-    this.productService.getProducts().subscribe(res => {
-      this.logger.log(res)
-    }, err => {
-      this.logger.error(err)
-    })
-  }
-
-  addProduct() {
-    this.productService.addProduct().subscribe(res => {
-      this.logger.log(res)
-    }, err => {
-      this.logger.error(err)
-    })
-  }
-
-  updateProduct() {
-    this.productService.updateProduct().subscribe(res => {
-      this.logger.log(res)
-    }, err => {
-      this.logger.error(err)
-    })
-  }
-
-  deleteProduct() {
-    this.productService.deleteProduct().subscribe(res => {
-      this.logger.log(res)
-    }, err => {
-      this.logger.error(err)
-    })
+  categoryDrop(event: CdkDragDrop<ProductCategory[]>) {
+    moveItemInArray(this.categoryList, event.previousIndex, event.currentIndex);
   }
 
 }
