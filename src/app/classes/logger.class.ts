@@ -6,6 +6,11 @@ export class Logger {
     console.log(`[${this.name}] `, ...args);
   }
 
+  table(arg: unknown) {
+    console.log(`[${this.name}]`);
+    console.table(arg);
+  }
+
   warn(...args: unknown[]) {
     console.warn(`[${this.name}] `, ...args);
   }

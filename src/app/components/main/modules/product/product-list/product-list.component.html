@@ -65,59 +65,71 @@
         <mat-progress-spinner [mode]="'indeterminate'"></mat-progress-spinner>
       </div>
 
+      <!-- Product Category Table -->
       <ng-template #TplCategoryList>
         <table mat-table
+               #CategoryTable
                [dataSource]="categoryList"
-               class="mat-elevation-z8">
+               class="mat-elevation-z8"
+               cdkDropList
+               [cdkDropListData]="categoryList"
+               (cdkDropListDropped)="categoryDrop($event);">
 
-          <!--- Note that these columns can be defined in any order.
-              The actual rendered columns are set as a property on the row definition" -->
-
-          <!-- ColumnOperation Column -->
+          <!-- ColumnOperation -->
           <ng-container [matColumnDef]="ColumnOperation">
             <th mat-header-cell
                 *matHeaderCellDef> 操作 </th>
             <td mat-cell
-                *matCellDef="let element; let i = index">
-                {{i}}
-              <mat-icon>menu</mat-icon>
+                *matCellDef="let element">
+              <mat-icon cdkDragHandle>reorder</mat-icon>
             </td>
           </ng-container>
 
-          <!-- Type Column -->
-          <ng-container [matColumnDef]="PCColumn.type">
-            <th mat-header-cell
-                *matHeaderCellDef> 種類 </th>
-            <td mat-cell
-                *matCellDef="let element"> {{element[PCColumn.type]}} </td>
-          </ng-container>
-
-          <!-- Name Column -->
+          <!-- PCColumn.order -->
           <ng-container [matColumnDef]="PCColumn.order">
             <th mat-header-cell
-                *matHeaderCellDef> Name </th>
+                *matHeaderCellDef> 順序 </th>
             <td mat-cell
-                *matCellDef="let element"> {{element[PCColumn.order]}} </td>
+                *matCellDef="let element"> {{ element[PCColumn.order] }} </td>
+          </ng-container>
+
+          <!-- PCColumn.type -->
+          <ng-container [matColumnDef]="PCColumn.type">
+            <th mat-header-cell
+                *matHeaderCellDef> 產品類別 </th>
+            <td mat-cell
+                *matCellDef="let element"> {{ element[PCColumn.type] }} </td>
           </ng-container>
 
           <tr mat-header-row
               *matHeaderRowDef="categoryColumns"></tr>
           <tr mat-row
-              *matRowDef="let row; columns: categoryColumns;"></tr>
+              *matRowDef="let row; columns: categoryColumns"
+              cdkDrag
+              [cdkDragData]="row"></tr>
         </table>
-
-
-        <div cdkDropList
-             class="example-list"
-             (cdkDropListDropped)="categoryDrop($event)">
-          <div class="example-box"
-               *ngFor="let category of categoryList"
-               cdkDrag>
-            {{ category.type }}
-          </div>
-        </div>
       </ng-template>
+
+      <div fxLayout="row"
+           fxLayoutAlign="end center">
+        <button type="button"
+                (click)="updateCategoryOrder();"
+                mat-raised-button
+                [disabled]="!ui.categoryOrderModified || ui.updatingCategoryOrder"
+                [color]="'primary'">
+          <i *ngIf="!ui.updatingCategoryOrder else TplNotUpdating"
+             class="material-icons">check</i>
+          <ng-template #TplNotUpdating>
+            <mat-progress-spinner [diameter]="20"
+                                  [style.display]="'inline-block'"
+                                  [mode]="'indeterminate'"></mat-progress-spinner>
+          </ng-template>
+          確認修改
+        </button>
+      </div>
+
     </mat-tab>
+
 
   </mat-tab-group>
 

@@ -78,6 +78,7 @@ export class ProductService {
       .update(
         {
           [PCColumn.type]: productCategory[PCColumn.type],
+          [PCColumn.order]: productCategory[PCColumn.order],
         })
       .eq(SColumn.id, productCategory[SColumn.id]))
   }

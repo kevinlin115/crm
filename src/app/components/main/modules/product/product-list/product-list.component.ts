@@ -1,5 +1,6 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTable } from '@angular/material/table';
 import { Product, ProductCategory } from '@classes/.';
 import { Logger } from '@classes/logger.class';
 import { DialogService, ProductService } from '@core/services';
@@ -7,7 +8,7 @@ import { PCColumn } from '@enums/.';
 import { Mode } from '@interfaces/mode.interface';
 import { ProductCategoryDetailData } from '@shared-components/product-category-detail-dialog/index';
 import { ProductDetailData } from '@shared-components/product-detail-dialog';
-import { catchError, tap } from 'rxjs';
+import { catchError, forkJoin, tap } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -23,11 +24,22 @@ export class ProductListComponent implements OnInit {
 
   productList = [] as Product[];
   categoryList = [] as ProductCategory[];
+  @ViewChild('CategoryTable') CategoryTable!: MatTable<ProductCategory>;
 
-  readonly categoryColumns = [this.ColumnOperation, PCColumn.type, PCColumn.order];
+  readonly categoryColumns = [this.ColumnOperation, PCColumn.order, PCColumn.type];
 
   ui = {
-    loadingCategories: false
+    // Product
+
+
+    // Product Category
+    loadingCategories: false,
+    categoryOrderModified: false,
+    categoryModifyIndex: {
+      min: 0,
+      max: 0,
+    },
+    updatingCategoryOrder: false
   }
 
   constructor(
@@ -64,6 +76,8 @@ export class ProductListComponent implements OnInit {
       tap(res => {
         this.ui.loadingCategories = false;
         this.categoryList = res.data || [];
+        this.ui.categoryModifyIndex.min = this.categoryList.length;
+        this.ui.categoryModifyIndex.max = 0;
       }),
       catchError(err => {
         this.logger.error(`Get category list error = `, err);
@@ -88,6 +102,42 @@ export class ProductListComponent implements OnInit {
 
   categoryDrop(event: CdkDragDrop<ProductCategory[]>) {
     moveItemInArray(this.categoryList, event.previousIndex, event.currentIndex);
+    const [smallIndex, bigIndex] = event.previousIndex < event.currentIndex ?
+      [event.previousIndex, event.currentIndex] :
+      [event.currentIndex, event.previousIndex];
+    for (let i = smallIndex; i <= bigIndex; i++) {
+      this.categoryList[i][PCColumn.order] = i;
+    }
+    if (smallIndex < this.ui.categoryModifyIndex.min) {
+      this.ui.categoryModifyIndex.min = smallIndex;
+    }
+    if (bigIndex > this.ui.categoryModifyIndex.max) {
+      this.ui.categoryModifyIndex.max = bigIndex;
+    }
+    this.ui.categoryOrderModified = true;
+
+    this.CategoryTable?.renderRows();
+  }
+
+  updateCategoryOrder() {
+    this.ui.updatingCategoryOrder = true;
+    const updateList = this.categoryList.filter((item, index) =>
+      this.ui.categoryModifyIndex.min <= index && index <= this.ui.categoryModifyIndex.max);
+    this.logger.table(updateList);
+    forkJoin(updateList.map(item => {
+      return this.productService.updateProductCategoriey(item)
+    })).pipe(
+      tap(() => {
+        this.ui.categoryOrderModified = false;
+        this.ui.updatingCategoryOrder = false;
+        this.ui.categoryModifyIndex = {
+          min: this.categoryList.length,
+          max: 0
+        };
+      }),
+    ).subscribe(() => { }, (err) => {
+      this.logger.error(`update Product Category order error = `, err);
+    });
   }
 
 }
