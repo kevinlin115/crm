@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
@@ -22,6 +23,7 @@ export const MaterialModules = [
   MatListModule,
   MatProgressSpinnerModule,
   MatSidenavModule,
+  MatTableModule,
   MatTabsModule,
   MatToolbarModule,
 ] as const;

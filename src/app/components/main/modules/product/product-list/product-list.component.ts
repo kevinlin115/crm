@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product, ProductCategory } from '@classes/.';
 import { Logger } from '@classes/logger.class';
 import { DialogService, ProductService } from '@core/services';
+import { PCColumn } from '@enums/.';
 import { Mode } from '@interfaces/mode.interface';
 import { ProductCategoryDetailData } from '@shared-components/product-category-detail-dialog/index';
 import { ProductDetailData } from '@shared-components/product-detail-dialog';
@@ -15,10 +16,15 @@ import { catchError, tap } from 'rxjs';
 })
 export class ProductListComponent implements OnInit {
 
+  get ColumnOperation() { return 'ColumnOperation'; }
+  get PCColumn() { return PCColumn; }
+
   private logger = new Logger('Product-List');
 
   productList = [] as Product[];
   categoryList = [] as ProductCategory[];
+
+  readonly categoryColumns = [this.ColumnOperation, PCColumn.type, PCColumn.order];
 
   ui = {
     loadingCategories: false
