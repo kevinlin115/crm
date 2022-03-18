@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Product, ProductCategory } from '@classes/.';
+import { Logger, Product, ProductCategory } from '@classes/.';
 import { PCColumn, PColumn, SColumn, Table } from '@enums/.';
 import { from, Subject } from 'rxjs';
 import { AuthService } from '.';
@@ -13,6 +13,8 @@ export class ProductService {
 
   get supabase() { return this.authService.supabase; }
 
+  private logger = new Logger('Product-Service');
+
   constructor(
     private authService: AuthService,
   ) { }
@@ -20,7 +22,15 @@ export class ProductService {
   getProducts() {
     return from(this.supabase
       .from(Table.Product)
-      .select('*'));
+      .select('*')
+      .select(`
+        *,
+        ${Table.ProductCategory} (
+          ${SColumn.id},
+          ${PCColumn.type}
+        )
+      `)
+    )
   }
 
   addProduct(product: Product) {

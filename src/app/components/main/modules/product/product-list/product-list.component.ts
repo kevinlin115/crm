@@ -33,7 +33,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   ui = {
     // Product
-
+    loadingProducts: false,
 
     // Product Category
     loadingCategories: false,
@@ -50,6 +50,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private productService: ProductService,
   ) {
     this.categorySub = this.productService.$productCategoryUpdate.subscribe(() => {
+      this.getProductList();
       this.getCategoryList();
     });
   }
@@ -64,7 +65,19 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   private getProductList() {
-
+    this.ui.loadingProducts = true;
+    this.productService.getProducts().pipe(
+      tap(res => {
+        this.ui.loadingProducts = false;
+        this.productList = res.data || [];
+        this.logger.table(`Product List = `, this.productList);
+      }),
+      catchError(err => {
+        this.logger.error(`Get Product list error = `, err);
+        this.ui.loadingProducts = false;
+        throw (err);
+      })
+    ).subscribe();
   }
 
   // Display Add New Product Dialog

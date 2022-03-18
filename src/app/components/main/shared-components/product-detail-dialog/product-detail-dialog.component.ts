@@ -43,7 +43,7 @@ export class ProductDetailDialogComponent implements OnInit {
     this.logger.table(`data = `, this.data);
 
     this.form = this.fb.group({
-      [PColumn.product_category_id]: new FormControl(''),
+      [PColumn.product_category_id]: new FormControl(null, [Validators.required]),
       [PColumn.label]: new FormControl('', [Validators.required]),
       [PColumn.value]: new FormControl(0, [Validators.required]),
     });
@@ -65,7 +65,7 @@ export class ProductDetailDialogComponent implements OnInit {
       if (refresh) {
         this.logger.log(`Refresh = `, refresh);
         this.form.patchValue({
-          [PColumn.product_category_id]: ''
+          [PColumn.product_category_id]: null
         });
         this.getCategories();
       }
