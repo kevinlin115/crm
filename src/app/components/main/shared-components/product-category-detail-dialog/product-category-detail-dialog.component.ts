@@ -109,6 +109,7 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
     return api.pipe(
       tap(() => {
         this.ui.submitting = false;
+        this.productService.$productCategoryUpdate.next(true);
         this.dialogRef.close(true);
       }),
       catchError((err) => {

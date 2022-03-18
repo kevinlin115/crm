@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Product, ProductCategory } from '@classes/.';
-import { PCColumn, SColumn, Table, PColumn } from '@enums/.';
-import { from } from 'rxjs';
+import { PCColumn, PColumn, SColumn, Table } from '@enums/.';
+import { from, Subject } from 'rxjs';
 import { AuthService } from '.';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
+
+  $productCategoryUpdate = new Subject();
 
   get supabase() { return this.authService.supabase; }
 

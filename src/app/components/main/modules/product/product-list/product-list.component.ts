@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { Product, ProductCategory } from '@classes/.';
 import { Logger } from '@classes/logger.class';
@@ -15,7 +15,7 @@ import { catchError, forkJoin, tap } from 'rxjs';
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy {
 
   get IndexColumn() { return 'IndexColumn'; }
   get ColumnOperation() { return 'ColumnOperation'; }
@@ -26,6 +26,7 @@ export class ProductListComponent implements OnInit {
   productList = [] as Product[];
   categoryList = [] as ProductCategory[];
   @ViewChild('CategoryTable') CategoryTable!: MatTable<ProductCategory>;
+  private categorySub;
 
   readonly productColumns = [this.IndexColumn, PColumn.label, PColumn.value, PColumn.product_category_id];
   readonly categoryColumns = [this.ColumnOperation, PCColumn.order, PCColumn.type];
@@ -47,11 +48,19 @@ export class ProductListComponent implements OnInit {
   constructor(
     private dialogService: DialogService,
     private productService: ProductService,
-  ) { }
+  ) {
+    this.categorySub = this.productService.$productCategoryUpdate.subscribe(() => {
+      this.getCategoryList();
+    });
+  }
 
   ngOnInit(): void {
     this.getProductList();
     this.getCategoryList();
+  }
+
+  ngOnDestroy(): void {
+    this.categorySub.unsubscribe();
   }
 
   private getProductList() {
