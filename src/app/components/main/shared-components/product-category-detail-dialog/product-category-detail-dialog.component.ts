@@ -31,7 +31,7 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
     formChanged: false,
     deleting: false,
     submitting: false
-  }
+  };
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: ProductCategoryDetailData,
