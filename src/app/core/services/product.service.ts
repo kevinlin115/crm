@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ProductCategory } from '@classes/.';
-import { PCColumn, SColumn, Table } from '@enums/.';
+import { Product, ProductCategory } from '@classes/.';
+import { PCColumn, SColumn, Table, PColumn } from '@enums/.';
 import { from } from 'rxjs';
 import { AuthService } from '.';
 
@@ -17,36 +17,39 @@ export class ProductService {
 
   getProducts() {
     return from(this.supabase
-      .from('Product')
+      .from(Table.Product)
       .select('*'));
   }
 
-  addProduct() {
+  addProduct(product: Product) {
     return from(this.supabase
-      .from('Product')
+      .from(Table.Product)
       .insert([
         {
-          label: 'abc',
-          value: 789
+          [PColumn.product_category_id]: product[PColumn.product_category_id],
+          [PColumn.label]: product[PColumn.label],
+          [PColumn.value]: product[PColumn.value],
         },
       ]));
   }
 
-  updateProduct() {
+  updateProduct(product: Product) {
     return from(this.supabase
-      .from('Product')
+      .from(Table.Product)
       .update(
         {
-          label: 'update lable'
+          [PColumn.product_category_id]: product[PColumn.product_category_id],
+          [PColumn.label]: product[PColumn.label],
+          [PColumn.value]: product[PColumn.value],
         })
-      .eq('id', '18'))
+      .eq(SColumn.id, product[SColumn.id]))
   }
 
-  deleteProduct() {
+  deleteProduct(product: Product) {
     return from(this.supabase
-      .from('Product')
+      .from(Table.Product)
       .delete()
-      .eq('id', '18'))
+      .eq(SColumn.id, product[SColumn.id]))
   }
 
   getProductCategories() {

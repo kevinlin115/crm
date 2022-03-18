@@ -1,12 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProductCategory } from '@classes/.';
 import { Logger } from '@classes/logger.class';
-import { ProductService, SnackService } from '@core/services/.';
-import { PColumn } from '@enums/.';
-import { ModeText } from '@interfaces/mode.interface';
+import { DialogService, ProductService, SnackService } from '@core/services/.';
+import { PCColumn, PColumn, SColumn } from '@enums/.';
+import { Mode, ModeText } from '@interfaces/mode.interface';
+import { catchError, tap } from 'rxjs';
 import { ProductDetailData } from '.';
+import { ProductCategoryDetailData } from '../product-category-detail-dialog';
 
 @Component({
   selector: 'app-product-detail-dialog',
@@ -17,6 +19,8 @@ export class ProductDetailDialogComponent implements OnInit {
 
   get ModeText() { return ModeText; }
   get PColumn() { return PColumn; }
+  get PCColumn() { return PCColumn; }
+  get SColumn() { return SColumn; }
 
   private logger = new Logger('Product-Detail-Dialog');
 
@@ -24,11 +28,13 @@ export class ProductDetailDialogComponent implements OnInit {
   categoryList = [] as ProductCategory[];
 
   ui = {
-    getCategories: false
+    getCategories: false,
+    submitting: false,
   };
 
   constructor(
     public dialogRef: MatDialogRef<ProductDetailDialogComponent, boolean>,
+    private dialogService: DialogService,
     @Inject(MAT_DIALOG_DATA) public data: ProductDetailData,
     private fb: FormBuilder,
     private productService: ProductService,
@@ -38,8 +44,8 @@ export class ProductDetailDialogComponent implements OnInit {
 
     this.form = this.fb.group({
       [PColumn.product_category_id]: new FormControl(''),
-      [PColumn.label]: new FormControl(''),
-      [PColumn.value]: new FormControl(0),
+      [PColumn.label]: new FormControl('', [Validators.required]),
+      [PColumn.value]: new FormControl(0, [Validators.required]),
     });
 
     this.getCategories();
@@ -48,11 +54,35 @@ export class ProductDetailDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit() {
+  addProductCategory() {
+    const data: ProductCategoryDetailData = {
+      mode: Mode.Add,
+      productCategory: new ProductCategory()
+    }
+    const dialogRef = this.dialogService.getProductCategoryDetailDialog(data);
 
+    dialogRef.afterClosed().subscribe((refresh: boolean) => {
+      if (refresh) {
+        this.logger.log(`Refresh = `, refresh);
+        this.form.patchValue({
+          [PColumn.product_category_id]: ''
+        });
+        this.getCategories();
+      }
+    });
   }
 
-  getCategories() {
+  onSubmit() {
+    this.logger.table('Form Value = ', this.form.value);
+
+    this.productService.addProduct(this.data.product)
+    if (this.ui.submitting) { return; }
+    this.ui.submitting = true;
+    Object.assign(this.data.product, this.form.value);
+    this.confirmApi().subscribe();
+  }
+
+  private getCategories() {
     this.ui.getCategories = true;
     this.productService.getProductCategories().subscribe(res => {
       this.ui.getCategories = false;
@@ -65,6 +95,23 @@ export class ProductDetailDialogComponent implements OnInit {
       this.ui.getCategories = false;
       this.logger.error(`Get Product Categories error = `, err);
     });
+  }
+
+  private confirmApi() {
+    const api = this.data.mode === Mode.Add ?
+      this.productService.addProduct(this.data.product) :
+      this.productService.updateProduct(this.data.product);
+    return api.pipe(
+      tap(() => {
+        this.ui.submitting = false;
+        this.dialogRef.close(true);
+      }),
+      catchError((err) => {
+        this.logger.error(`confirm api error = `, err);
+        this.ui.submitting = false;
+        throw (err);
+      })
+    )
   }
 
 }

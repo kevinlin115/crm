@@ -4,26 +4,44 @@
   <h2 [style.margin-bottom]="'0'">
     {{ModeText[data.mode]}}產品
   </h2>
-  <mat-progress-spinner *ngIf="'ui.loadingCategories'"
-                        [style.margin-left]="'4px'"
-                        [style.width]="'20px'"
-                        [diameter]="20"
-                        [mode]="'indeterminate'"></mat-progress-spinner>
 </div>
 
 <form [formGroup]="form"
       (ngSubmit)="onSubmit();">
+  <div>
+    <mat-form-field class="w-100"
+                    appearance="fill">
+      <mat-label>產品類別
+        <mat-progress-spinner *ngIf="ui.getCategories;"
+                              [diameter]="15"
+                              [style.display]="'inline-block'"
+                              [mode]="'indeterminate'"></mat-progress-spinner>
+      </mat-label>
+      <mat-select [formControlName]="PColumn.product_category_id">
+        <mat-option *ngIf="categoryList.length === 0"
+                    disabled="">
+          請先新增產品類別
+        </mat-option>
+        <mat-option *ngFor="let category of categoryList"
+                    [value]="category[SColumn.id]">
+          {{ category[PCColumn.type] }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field class="w-100"
-                  appearance="fill">
-    <mat-label>產品類別</mat-label>
-    <mat-select [disabled]="false">
-      <mat-option value="option1">Option 1</mat-option>
-      <mat-option value="option2"
-                  disabled>Option 2 (disabled)</mat-option>
-      <mat-option value="option3">Option 3</mat-option>
-    </mat-select>
-  </mat-form-field>
+    <button type="button"
+            mat-raised-button
+            [disabled]="false"
+            (click)="addProductCategory();"
+            [color]="'primary'">
+      <ng-template>
+        <mat-progress-spinner [diameter]="20"
+                              [style.display]="'inline-block'"
+                              [mode]="'indeterminate'"></mat-progress-spinner>
+      </ng-template>
+      新增產品類別
+    </button>
+  </div>
 
   <mat-form-field class="w-100"
                   appearance="standard">
@@ -41,7 +59,6 @@
                   appearance="standard">
     <mat-label>價格</mat-label>
     <input type="number"
-           min="1"
            matInput
            [formControlName]="PColumn.value"
            placeholder="請輸入價格">
@@ -54,9 +71,9 @@
        fxLayoutAlign="end center">
     <button type="submit"
             mat-raised-button
-            [disabled]="false"
+            [disabled]="form.invalid || ui.submitting"
             [color]="'primary'">
-      <i *ngIf="'!ui.submitting else TplNotSubmitting'"
+      <i *ngIf="!ui.submitting else TplNotSubmitting"
          class="material-icons">check</i>
       <ng-template #TplNotSubmitting>
         <mat-progress-spinner [diameter]="20"
