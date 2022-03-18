@@ -4,7 +4,7 @@ import { MatTable } from '@angular/material/table';
 import { Product, ProductCategory } from '@classes/.';
 import { Logger } from '@classes/logger.class';
 import { DialogService, ProductService } from '@core/services';
-import { PCColumn } from '@enums/.';
+import { PCColumn, PColumn } from '@enums/.';
 import { Mode } from '@interfaces/mode.interface';
 import { ProductCategoryDetailData } from '@shared-components/product-category-detail-dialog/index';
 import { ProductDetailData } from '@shared-components/product-detail-dialog';
@@ -17,6 +17,7 @@ import { catchError, forkJoin, tap } from 'rxjs';
 })
 export class ProductListComponent implements OnInit {
 
+  get IndexColumn() { return 'IndexColumn'; }
   get ColumnOperation() { return 'ColumnOperation'; }
   get PCColumn() { return PCColumn; }
 
@@ -26,6 +27,7 @@ export class ProductListComponent implements OnInit {
   categoryList = [] as ProductCategory[];
   @ViewChild('CategoryTable') CategoryTable!: MatTable<ProductCategory>;
 
+  readonly productColumns = [this.IndexColumn, PColumn.label, PColumn.value, PColumn.type];
   readonly categoryColumns = [this.ColumnOperation, PCColumn.order, PCColumn.type];
 
   ui = {
@@ -91,12 +93,14 @@ export class ProductListComponent implements OnInit {
   showAddProductCategory() {
     const data: ProductCategoryDetailData = {
       mode: Mode.Add,
-      type: ''
+      productCategory: new ProductCategory()
     }
     const dialogRef = this.dialogService.getProductCategoryDetailDialog(data);
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+    dialogRef.afterClosed().subscribe((refresh: boolean) => {
+      if (refresh) {
+        this.getCategoryList();
+      }
     });
   }
 
@@ -123,7 +127,7 @@ export class ProductListComponent implements OnInit {
     this.ui.updatingCategoryOrder = true;
     const updateList = this.categoryList.filter((item, index) =>
       this.ui.categoryModifyIndex.min <= index && index <= this.ui.categoryModifyIndex.max);
-    this.logger.table(updateList);
+    this.logger.table(`updateList`, updateList);
     forkJoin(updateList.map(item => {
       return this.productService.updateProductCategoriey(item)
     })).pipe(
@@ -137,6 +141,21 @@ export class ProductListComponent implements OnInit {
       }),
     ).subscribe(() => { }, (err) => {
       this.logger.error(`update Product Category order error = `, err);
+    });
+  }
+
+  editCategory(index: number) {
+    this.logger.table(`edit category`, this.categoryList[index]);
+    const data: ProductCategoryDetailData = {
+      mode: Mode.Edit,
+      productCategory: this.categoryList[index]
+    }
+    const dialogRef = this.dialogService.getProductCategoryDetailDialog(data);
+
+    dialogRef.afterClosed().subscribe((refresh: boolean) => {
+      if (refresh) {
+        this.getCategoryList();
+      }
     });
   }
 

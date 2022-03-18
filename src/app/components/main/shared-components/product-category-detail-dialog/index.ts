@@ -1,7 +1,9 @@
+import { ProductCategory } from "@classes/.";
 import { HasMode } from "@interfaces/mode.interface";
 
 export interface ProductCategoryDetailData extends HasMode {
-  type: string
+  productCategory: ProductCategory,
 }
 
-export * from "./product-category-detail-dialog.component"
+export * from "./product-category-detail-dialog.component";
+

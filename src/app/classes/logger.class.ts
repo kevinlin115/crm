@@ -6,8 +6,8 @@ export class Logger {
     console.log(`[${this.name}] `, ...args);
   }
 
-  table(arg: unknown) {
-    console.log(`[${this.name}]`);
+  table(description: string, arg: unknown) {
+    console.log(`[${this.name}] ${description}`);
     console.table(arg);
   }
 

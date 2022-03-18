@@ -22,12 +22,12 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
   private logger = new Logger('Product-Category-Detail-Dialog');
   form;
 
-  private category = new ProductCategory();
   private categoryList = [] as ProductCategory[];
 
   ui = {
     loadingCategories: false,
     gotCategories: false,
+    formChanged: false,
     submitting: false
   }
 
@@ -43,6 +43,17 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
       type: new FormControl('', [Validators.required, this.typeValidator()])
     });
 
+    if (this.data.mode === Mode.Edit) {
+      this.form.patchValue({
+        type: this.data.productCategory?.type
+      });
+    }
+
+    this.form.valueChanges.subscribe(() => {
+      this.logger.log(`form changed`);
+      this.ui.formChanged = true;
+    })
+
     this.getCategories();
   }
 
@@ -53,9 +64,9 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
   onSubmit() {
     if (this.ui.submitting) { return; }
     this.ui.submitting = true;
-    this.category[PCColumn.type] = this.form.value[PCColumn.type];
+    this.data.productCategory[PCColumn.type] = this.form.value[PCColumn.type];
     if (this.data.mode === Mode.Add) {
-      this.category[PCColumn.order] = this.categoryList.length;
+      this.data.productCategory[PCColumn.order] = this.categoryList.length;
     }
     this.confirmApi().subscribe();
   }
@@ -77,12 +88,12 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
   /** Get Confirm Api */
   private confirmApi() {
     const api = this.data.mode === Mode.Add ?
-      this.productService.addProductCategoriey(this.category) :
-      this.productService.updateProductCategoriey(this.category);
+      this.productService.addProductCategoriey(this.data.productCategory) :
+      this.productService.updateProductCategoriey(this.data.productCategory);
     return api.pipe(
       tap(() => {
         this.ui.submitting = false;
-        this.dialogRef.close();
+        this.dialogRef.close(true);
       }),
       catchError((err) => {
         this.logger.error(`confirm api error = `, err);
@@ -95,11 +106,11 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
   /** 產品類別名稱 Validator */
   private typeValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (this.data.mode === Mode.Add) {
-        const existingTypes = this.categoryList.map(item => item[PCColumn.type]);
-        return existingTypes.indexOf(control.value) >= 0 ? { TypeExisted: control.value } : null;
+      let existingTypes = this.categoryList.map(item => item[PCColumn.type]);
+      if (this.data.mode === Mode.Edit) {
+        existingTypes = existingTypes.filter(type => type !== this.data.productCategory.type)
       }
-      return null;
+      return existingTypes.indexOf(control.value) >= 0 ? { TypeExisted: control.value } : null;
     };
   }
 

@@ -28,6 +28,46 @@
       <mat-divider></mat-divider>
 
       <!-- Content -->
+      <table *ngIf="productList.length > 0; else TplNoData"
+             mat-table
+             [dataSource]="productList"
+             class="mat-elevation-z8">
+
+        <!-- ColumnOperation -->
+        <ng-container [matColumnDef]="ColumnOperation">
+          <th mat-header-cell
+              *matHeaderCellDef> 操作 </th>
+          <td mat-cell
+              *matCellDef="let element">
+            <mat-icon cdkDragHandle
+                      class="drag-handle">reorder</mat-icon>
+          </td>
+        </ng-container>
+
+        <!-- PCColumn.order -->
+        <ng-container [matColumnDef]="PCColumn.order">
+          <th mat-header-cell
+              *matHeaderCellDef> 順序 </th>
+          <td mat-cell
+              *matCellDef="let element"> {{ element[PCColumn.order] }} </td>
+        </ng-container>
+
+        <!-- PCColumn.type -->
+        <ng-container [matColumnDef]="PCColumn.type">
+          <th mat-header-cell
+              *matHeaderCellDef> 產品類別 </th>
+          <td mat-cell
+              *matCellDef="let element"> {{ element[PCColumn.type] }} </td>
+        </ng-container>
+
+        <tr mat-header-row
+            *matHeaderRowDef="categoryColumns"></tr>
+        <tr mat-row
+            *matRowDef="let row; columns: categoryColumns"
+            cdkDrag
+            cdkDragLockAxis="y"
+            [cdkDragData]="row"></tr>
+      </table>
 
     </mat-tab>
 
@@ -67,7 +107,8 @@
 
       <!-- Product Category Table -->
       <ng-template #TplCategoryList>
-        <table mat-table
+        <table *ngIf="categoryList.length > 0; else TplNoData"
+               mat-table
                #CategoryTable
                [dataSource]="categoryList"
                class="mat-elevation-z8"
@@ -80,9 +121,11 @@
             <th mat-header-cell
                 *matHeaderCellDef> 操作 </th>
             <td mat-cell
-                *matCellDef="let element">
+                *matCellDef="let element; let index = index">
               <mat-icon cdkDragHandle
                         class="drag-handle">reorder</mat-icon>
+              <mat-icon class="pointer"
+                        (click)="editCategory(index)">edit</mat-icon>
             </td>
           </ng-container>
 
@@ -132,7 +175,12 @@
 
     </mat-tab>
 
-
   </mat-tab-group>
+
+  <ng-template #TplNoData>
+    <h3 [style.margin]="'1rem'"
+        fxLayout="row"
+        fxLayoutAlign="center center">查無資料</h3>
+  </ng-template>
 
 </div>

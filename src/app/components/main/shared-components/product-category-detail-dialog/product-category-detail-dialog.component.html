@@ -30,7 +30,7 @@
        fxLayoutAlign="end center">
     <button type="submit"
             mat-raised-button
-            [disabled]="form.invalid || ui.loadingCategories || ui.submitting"
+            [disabled]="form.invalid || ui.loadingCategories || !ui.formChanged || ui.submitting"
             [color]="'primary'">
       <i *ngIf="!ui.submitting else TplNotSubmitting"
          class="material-icons">check</i>
