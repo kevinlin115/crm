@@ -16,6 +16,7 @@ import { ProductCategoryDetailData } from './index';
 })
 export class ProductCategoryDetailDialogComponent implements OnInit {
 
+  get Mode() { return Mode; }
   get ModeText() { return ModeText; }
   get PCColumn() { return PCColumn; }
 
@@ -28,19 +29,20 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
     loadingCategories: false,
     gotCategories: false,
     formChanged: false,
+    deleting: false,
     submitting: false
   }
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: ProductCategoryDetailData,
-    public dialogRef: MatDialogRef<ProductCategoryDetailDialogComponent>,
+    public dialogRef: MatDialogRef<ProductCategoryDetailDialogComponent, boolean>,
     private fb: FormBuilder,
     private productService: ProductService
   ) {
-    this.logger.log(`data = `, this.data);
+    this.logger.table(`data = `, this.data);
 
     this.form = this.fb.group({
-      type: new FormControl('', [Validators.required, this.typeValidator()])
+      [PCColumn.type]: new FormControl('', [Validators.required, this.typeValidator()])
     });
 
     if (this.data.mode === Mode.Edit) {
@@ -58,6 +60,20 @@ export class ProductCategoryDetailDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  /** 刪除產品類別 */
+  delete() {
+    if (this.ui.submitting) { return; }
+    this.ui.deleting = true;
+    this.productService.deleteProductCategoriey(this.data.productCategory).subscribe(res => {
+      this.ui.deleting = false;
+      this.dialogRef.close(true);
+      this.logger.log(`Delete Product Category res = `, res);
+    }, err => {
+      this.ui.deleting = false;
+      this.logger.error(`Delete Product Category error = `, err);
+    });
   }
 
   /** 確認 新增/更新產品類別 */

@@ -1,8 +1,9 @@
+import { Product } from "@classes/.";
 import { HasMode } from "@interfaces/mode.interface";
 
 export interface ProductDetailData extends HasMode {
-  label: string,
-  value: number
+  product: Product
 }
 
 export * from "./product-detail-dialog.component";
+

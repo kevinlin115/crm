@@ -1,3 +1,69 @@
-<h2>
-  {{ModeText[data.mode]}}產品
-</h2>
+<div fxLayout="row"
+     fxLayoutAlign="start center"
+     [style.margin-bottom]="'16px'">
+  <h2 [style.margin-bottom]="'0'">
+    {{ModeText[data.mode]}}產品
+  </h2>
+  <mat-progress-spinner *ngIf="'ui.loadingCategories'"
+                        [style.margin-left]="'4px'"
+                        [style.width]="'20px'"
+                        [diameter]="20"
+                        [mode]="'indeterminate'"></mat-progress-spinner>
+</div>
+
+<form [formGroup]="form"
+      (ngSubmit)="onSubmit();">
+
+  <mat-form-field class="w-100"
+                  appearance="fill">
+    <mat-label>產品類別</mat-label>
+    <mat-select [disabled]="false">
+      <mat-option value="option1">Option 1</mat-option>
+      <mat-option value="option2"
+                  disabled>Option 2 (disabled)</mat-option>
+      <mat-option value="option3">Option 3</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="w-100"
+                  appearance="standard">
+    <mat-label>產品名稱</mat-label>
+    <input type="text"
+           matInput
+           [formControlName]="PColumn.label"
+           placeholder="請輸入產品名稱">
+    <!-- <mat-error *ngIf="form.controls[PColumn.label].hasError('TypeExisted')">
+      產品類別 <strong>{{ form.value[PColumn.label] }} </strong>已存在
+    </mat-error> -->
+  </mat-form-field>
+
+  <mat-form-field class="w-100"
+                  appearance="standard">
+    <mat-label>價格</mat-label>
+    <input type="number"
+           min="1"
+           matInput
+           [formControlName]="PColumn.value"
+           placeholder="請輸入價格">
+    <!-- <mat-error *ngIf="form.controls[PColumn.label].hasError('TypeExisted')">
+      產品類別 <strong>{{ form.value[PColumn.label] }} </strong>已存在
+    </mat-error> -->
+  </mat-form-field>
+
+  <div fxLayout="row"
+       fxLayoutAlign="end center">
+    <button type="submit"
+            mat-raised-button
+            [disabled]="false"
+            [color]="'primary'">
+      <i *ngIf="'!ui.submitting else TplNotSubmitting'"
+         class="material-icons">check</i>
+      <ng-template #TplNotSubmitting>
+        <mat-progress-spinner [diameter]="20"
+                              [style.display]="'inline-block'"
+                              [mode]="'indeterminate'"></mat-progress-spinner>
+      </ng-template>
+      確認
+    </button>
+  </div>
+</form>

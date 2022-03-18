@@ -1,5 +1,5 @@
 export enum PColumn {
   label = 'label',
   value = 'value',
-  type = 'type'
+  product_category_id = 'product_category_id'
 }

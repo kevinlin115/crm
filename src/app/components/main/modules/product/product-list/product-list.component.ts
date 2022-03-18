@@ -27,7 +27,7 @@ export class ProductListComponent implements OnInit {
   categoryList = [] as ProductCategory[];
   @ViewChild('CategoryTable') CategoryTable!: MatTable<ProductCategory>;
 
-  readonly productColumns = [this.IndexColumn, PColumn.label, PColumn.value, PColumn.type];
+  readonly productColumns = [this.IndexColumn, PColumn.label, PColumn.value, PColumn.product_category_id];
   readonly categoryColumns = [this.ColumnOperation, PCColumn.order, PCColumn.type];
 
   ui = {
@@ -62,9 +62,8 @@ export class ProductListComponent implements OnInit {
   showAddProduct() {
     const data: ProductDetailData = {
       mode: Mode.Add,
-      label: '',
-      value: 0
-    }
+      product: new Product()
+    };
     const dialogRef = this.dialogService.getProductDetailDialog(data);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -74,6 +73,7 @@ export class ProductListComponent implements OnInit {
 
   private getCategoryList() {
     this.ui.loadingCategories = true;
+    this.ui.categoryOrderModified = false;
     this.productService.getProductCategories().pipe(
       tap(res => {
         this.ui.loadingCategories = false;

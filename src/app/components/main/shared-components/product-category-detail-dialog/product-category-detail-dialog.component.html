@@ -27,10 +27,25 @@
   </mat-form-field>
 
   <div fxLayout="row"
-       fxLayoutAlign="end center">
+       fxLayoutAlign="space-between center">
+    <button [ngClass]="{'hidden': data.mode !== Mode.Edit}"
+            type="button"
+            (click)="delete();"
+            mat-raised-button
+            [disabled]="ui.deleting || ui.submitting">
+      <i *ngIf="!ui.deleting else TplNotDeleting"
+         class="material-icons">delete</i>
+      <ng-template #TplNotDeleting>
+        <mat-progress-spinner [diameter]="20"
+                              [style.display]="'inline-block'"
+                              [mode]="'indeterminate'"></mat-progress-spinner>
+      </ng-template>
+      刪除
+    </button>
+
     <button type="submit"
             mat-raised-button
-            [disabled]="form.invalid || ui.loadingCategories || !ui.formChanged || ui.submitting"
+            [disabled]="form.invalid || ui.loadingCategories || !ui.formChanged || ui.deleting || ui.submitting"
             [color]="'primary'">
       <i *ngIf="!ui.submitting else TplNotSubmitting"
          class="material-icons">check</i>

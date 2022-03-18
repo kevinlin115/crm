@@ -83,4 +83,11 @@ export class ProductService {
       .eq(SColumn.id, productCategory[SColumn.id]))
   }
 
+  deleteProductCategoriey(productCategory: ProductCategory) {
+    return from(this.supabase
+      .from(Table.ProductCategory)
+      .delete()
+      .eq(SColumn.id, productCategory[SColumn.id]))
+  }
+
 }
