@@ -33,23 +33,14 @@
              [dataSource]="productList"
              class="mat-elevation-z8">
 
-        <!-- ColumnOperation -->
-        <ng-container [matColumnDef]="ColumnOperation">
+        <!-- IndexColumn -->
+        <ng-container [matColumnDef]="IndexColumn">
           <th mat-header-cell
-              *matHeaderCellDef> 操作 </th>
+              *matHeaderCellDef> # </th>
           <td mat-cell
-              *matCellDef="let element">
-            <mat-icon cdkDragHandle
-                      class="drag-handle">reorder</mat-icon>
+              *matCellDef="let element; let index = index;">
+            {{ index }}
           </td>
-        </ng-container>
-
-        <!-- PCColumn.order -->
-        <ng-container [matColumnDef]="PCColumn.order">
-          <th mat-header-cell
-              *matHeaderCellDef> 順序 </th>
-          <td mat-cell
-              *matCellDef="let element"> {{ element[PCColumn.order] }} </td>
         </ng-container>
 
         <!-- PCColumn.type -->
@@ -57,16 +48,29 @@
           <th mat-header-cell
               *matHeaderCellDef> 產品類別 </th>
           <td mat-cell
-              *matCellDef="let element"> {{ element[PCColumn.type] }} </td>
+              *matCellDef="let element"> {{ element[Table.ProductCategory][PCColumn.type] }} </td>
+        </ng-container>
+
+        <!-- PColumn.label -->
+        <ng-container [matColumnDef]="PColumn.label">
+          <th mat-header-cell
+              *matHeaderCellDef> 名稱 </th>
+          <td mat-cell
+              *matCellDef="let element"> {{ element[PColumn.label] }} </td>
+        </ng-container>
+
+        <!-- PColumn.value -->
+        <ng-container [matColumnDef]="PColumn.value">
+          <th mat-header-cell
+              *matHeaderCellDef> 價格 </th>
+          <td mat-cell
+              *matCellDef="let element"> {{ element[PColumn.value] }} </td>
         </ng-container>
 
         <tr mat-header-row
-            *matHeaderRowDef="categoryColumns"></tr>
+            *matHeaderRowDef="productColumns"></tr>
         <tr mat-row
-            *matRowDef="let row; columns: categoryColumns"
-            cdkDrag
-            cdkDragLockAxis="y"
-            [cdkDragData]="row"></tr>
+            *matRowDef="let row; columns: productColumns"></tr>
       </table>
 
     </mat-tab>

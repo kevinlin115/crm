@@ -22,14 +22,12 @@ export class ProductService {
   getProducts() {
     return from(this.supabase
       .from(Table.Product)
-      .select('*')
       .select(`
         *,
         ${Table.ProductCategory} (
-          ${SColumn.id},
           ${PCColumn.type}
         )
-      `)
+      `, { count: 'exact' })
     )
   }
 
@@ -67,7 +65,7 @@ export class ProductService {
   getProductCategories() {
     return from(this.supabase
       .from(Table.ProductCategory)
-      .select('*')
+      .select('*', { count: 'exact' })
       .order(
         PCColumn.order,
         {

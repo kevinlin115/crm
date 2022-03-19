@@ -1,10 +1,10 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { Product, ProductCategory } from '@classes/.';
 import { Logger } from '@classes/logger.class';
 import { DialogService, ProductService } from '@core/services';
-import { PCColumn, PColumn } from '@enums/.';
+import { PCColumn, PColumn, Table } from '@enums/.';
 import { Mode } from '@interfaces/mode.interface';
 import { ProductCategoryDetailData } from '@shared-components/product-category-detail-dialog/index';
 import { ProductDetailData } from '@shared-components/product-detail-dialog';
@@ -20,6 +20,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
   get IndexColumn() { return 'IndexColumn'; }
   get ColumnOperation() { return 'ColumnOperation'; }
   get PCColumn() { return PCColumn; }
+  get PColumn() { return PColumn; }
+  get Table() { return Table; }
 
   private logger = new Logger('Product-List');
 
@@ -28,7 +30,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   @ViewChild('CategoryTable') CategoryTable!: MatTable<ProductCategory>;
   private categorySub;
 
-  readonly productColumns = [this.IndexColumn, PColumn.label, PColumn.value, PColumn.product_category_id];
+  readonly productColumns = [this.IndexColumn, PCColumn.type, PColumn.label, PColumn.value];
   readonly categoryColumns = [this.ColumnOperation, PCColumn.order, PCColumn.type];
 
   ui = {
