@@ -77,8 +77,8 @@
                 *matCellDef="let element"> {{ element[PColumn.value] }} </td>
           </ng-container>
 
-          <!-- ColumnOperation -->
-          <ng-container [matColumnDef]="ColumnOperation">
+          <!-- OperationColumn -->
+          <ng-container [matColumnDef]="OperationColumn">
             <th mat-header-cell
                 *matHeaderCellDef> 操作 </th>
             <td mat-cell
@@ -147,8 +147,8 @@
                [cdkDropListData]="categoryList"
                (cdkDropListDropped)="categoryDrop($event);">
 
-          <!-- ColumnOperation -->
-          <ng-container [matColumnDef]="ColumnOperation">
+          <!-- OperationColumn -->
+          <ng-container [matColumnDef]="OperationColumn">
             <th mat-header-cell
                 *matHeaderCellDef> 操作 </th>
             <td mat-cell

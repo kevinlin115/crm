@@ -7,22 +7,22 @@ export interface NavItem {
 export const NavList: NavItem[] = [
   {
     icon: 'person',
-    label: 'Customer',
+    label: '客戶',
     routerLink: '/main/customer'
   },
   {
     icon: 'store',
-    label: 'Product',
+    label: '產品',
     routerLink: '/main/product'
-  },
-  {
-    icon: 'bar_chart',
-    label: 'Chart',
-    routerLink: '/main/diagram'
   },
   {
     icon: 'shopping_cart',
     label: 'POS',
     routerLink: '/main/pos'
+  },
+  {
+    icon: 'bar_chart',
+    label: '圖表',
+    routerLink: '/main/diagram'
   },
 ]

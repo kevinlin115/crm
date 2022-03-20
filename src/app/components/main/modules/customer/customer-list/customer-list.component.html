@@ -1,1 +1,88 @@
-<p>customer-list works!</p>
+<div class="module-container">
+  <!-- Content Header -->
+  <div fxLayout="row"
+       fxLayoutAlign="space-between end"
+       [style.margin]="'1rem 0'">
+    <h2 [style.margin]="0">
+      客戶列表
+    </h2>
+    <button type="button"
+            mat-raised-button
+            color="primary"
+            (click)="showAddCustomer();">
+      新增客戶
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+
+  <!-- Content -->
+  <div *ngIf="ui.loadingCustomers else TplCustomerTable"
+       fxLayout="row"
+       fxLayoutAlign="center center"
+       [style.padding]="'1rem'">
+
+    <mat-progress-spinner [mode]="'indeterminate'"></mat-progress-spinner>
+  </div>
+
+  <!-- Product Table -->
+  <ng-template #TplCustomerTable>
+    <table *ngIf="customerList.length > 0; else TplNoData"
+           mat-table
+           [dataSource]="customerList"
+           class="mat-elevation-z8">
+
+      <!-- IndexColumn -->
+      <ng-container [matColumnDef]="IndexColumn">
+        <th mat-header-cell
+            *matHeaderCellDef> # </th>
+        <td mat-cell
+            *matCellDef="let element; let index = index;">
+          {{ (customerPage.pageSize * customerPage.pageIndex) + index + 1 }}
+        </td>
+      </ng-container>
+
+      <!-- CColumn.name -->
+      <ng-container [matColumnDef]="CColumn.name">
+        <th mat-header-cell
+            *matHeaderCellDef> 產品類別 </th>
+        <td mat-cell
+            *matCellDef="let element"> {{ element[CColumn.name] }} </td>
+      </ng-container>
+
+      <!-- CColumn.mobile -->
+      <ng-container [matColumnDef]="CColumn.mobile">
+        <th mat-header-cell
+            *matHeaderCellDef> 價格 </th>
+        <td mat-cell
+            *matCellDef="let element"> {{ element[CColumn.mobile] }} </td>
+      </ng-container>
+
+      <!-- ColumnOperation -->
+      <ng-container [matColumnDef]="OperationColumn">
+        <th mat-header-cell
+            *matHeaderCellDef> 操作 </th>
+        <td mat-cell
+            *matCellDef="let element; let index = index">
+          <mat-icon class="pointer"
+                    (click)="editCustomer(index)">edit</mat-icon>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row
+          *matHeaderRowDef="customerColumns"></tr>
+      <tr mat-row
+          *matRowDef="let row; columns: customerColumns"></tr>
+    </table>
+  </ng-template>
+
+  <mat-paginator [length]="customerPage.length"
+                 [pageSizeOptions]="pageSizeOptions"
+                 (page)="onCustomerPage($event);">
+  </mat-paginator>
+
+  <ng-template #TplNoData>
+    <h3 [style.margin]="'1rem'"
+        fxLayout="row"
+        fxLayoutAlign="center center">查無資料</h3>
+  </ng-template>
+</div>

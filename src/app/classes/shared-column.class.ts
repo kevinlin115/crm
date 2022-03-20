@@ -6,3 +6,6 @@ export class SharedColumn {
   [SColumn.creator_email] = '';
   [SColumn.creator_uid] = '';
 }
+
+export const IndexColumn = 'IndexColumn' as const;
+export const OperationColumn = 'OperationColumn' as const;

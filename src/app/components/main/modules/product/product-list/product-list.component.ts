@@ -2,7 +2,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTable } from '@angular/material/table';
-import { Product, ProductCategory } from '@classes/.';
+import { IndexColumn, OperationColumn, Product, ProductCategory } from '@classes/.';
 import { Logger } from '@classes/logger.class';
 import { pageSizeOptions } from '@core/mat-paginator';
 import { DialogService, ProductService } from '@core/services';
@@ -21,8 +21,8 @@ import { catchError, forkJoin, tap } from 'rxjs';
 })
 export class ProductListComponent implements OnInit, OnDestroy {
 
-  get IndexColumn() { return 'IndexColumn'; }
-  get ColumnOperation() { return 'ColumnOperation'; }
+  get IndexColumn() { return IndexColumn; }
+  get OperationColumn() { return OperationColumn; }
   get pageSizeOptions() { return pageSizeOptions; }
   get PCColumn() { return PCColumn; }
   get PColumn() { return PColumn; }
@@ -38,8 +38,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
   @ViewChild('CategoryTable') CategoryTable!: MatTable<ProductCategory>;
   private categorySub;
 
-  readonly productColumns = [this.IndexColumn, PCColumn.type, PColumn.label, PColumn.value, this.ColumnOperation];
-  readonly categoryColumns = [this.ColumnOperation, PCColumn.order, PCColumn.type];
+  readonly productColumns = [this.IndexColumn, PCColumn.type, PColumn.label, PColumn.value, this.OperationColumn];
+  readonly categoryColumns = [this.OperationColumn, PCColumn.order, PCColumn.type];
 
   ui = {
     // Product
