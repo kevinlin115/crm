@@ -45,7 +45,7 @@ export class ProductDetailDialogComponent implements OnInit {
     this.form = this.fb.group({
       [PColumn.product_category_id]: new FormControl(null, [Validators.required]),
       [PColumn.label]: new FormControl('', [Validators.required]),
-      [PColumn.value]: new FormControl(0, [Validators.required]),
+      [PColumn.value]: new FormControl('', [Validators.required]),
     });
 
     this.getCategories();

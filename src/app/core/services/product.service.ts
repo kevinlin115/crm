@@ -19,8 +19,9 @@ export class ProductService {
     private authService: AuthService,
   ) { }
 
-  getProducts() {
-    return from(this.supabase
+  getProducts(range?: { from: number, to: number }) {
+    this.logger.table(`Product range = `, range);
+    let api = this.supabase
       .from(Table.Product)
       .select(`
         *,
@@ -28,7 +29,10 @@ export class ProductService {
           ${PCColumn.type}
         )
       `, { count: 'exact' })
-    )
+    if (range) {
+      api = api.range(range.from, range.to);
+    }
+    return from(api);
   }
 
   addProduct(product: Product) {

@@ -1,9 +1,12 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { MatTable } from '@angular/material/table';
 import { Product, ProductCategory } from '@classes/.';
 import { Logger } from '@classes/logger.class';
+import { pageSizeOptions } from '@core/mat-paginator';
 import { DialogService, ProductService } from '@core/services';
+import { UtilService } from '@core/services/.';
 import { PCColumn, PColumn, Table } from '@enums/.';
 import { Mode } from '@interfaces/mode.interface';
 import { ProductCategoryDetailData } from '@shared-components/product-category-detail-dialog/index';
@@ -19,6 +22,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   get IndexColumn() { return 'IndexColumn'; }
   get ColumnOperation() { return 'ColumnOperation'; }
+  get pageSizeOptions() { return pageSizeOptions; }
   get PCColumn() { return PCColumn; }
   get PColumn() { return PColumn; }
   get Table() { return Table; }
@@ -27,6 +31,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   productList = [] as Product[];
   categoryList = [] as ProductCategory[];
+
+  productPage = new PageEvent();
+
   @ViewChild('CategoryTable') CategoryTable!: MatTable<ProductCategory>;
   private categorySub;
 
@@ -50,11 +57,19 @@ export class ProductListComponent implements OnInit, OnDestroy {
   constructor(
     private dialogService: DialogService,
     private productService: ProductService,
+    private utilService: UtilService,
   ) {
     this.categorySub = this.productService.$productCategoryUpdate.subscribe(() => {
       this.getProductList();
       this.getCategoryList();
     });
+    this.initPage();
+  }
+
+  private initPage() {
+    this.productPage.length = 0;
+    this.productPage.pageIndex = 0;
+    this.productPage.pageSize = this.pageSizeOptions[0];
   }
 
   ngOnInit(): void {
@@ -67,16 +82,21 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   private getProductList() {
+    this.productList = [];
     this.ui.loadingProducts = true;
-    this.productService.getProducts().pipe(
+    const range = this.utilService.getRange(this.productPage);
+    this.productService.getProducts(range).pipe(
       tap(res => {
+        this.logger.log(`product list res = `, res);
         this.ui.loadingProducts = false;
         this.productList = res.data || [];
+        this.productPage.length = res.count || 0;
         this.logger.table(`Product List = `, this.productList);
       }),
       catchError(err => {
         this.logger.error(`Get Product list error = `, err);
         this.ui.loadingProducts = false;
+        this.productPage.length = 0;
         throw (err);
       })
     ).subscribe();
@@ -91,8 +111,16 @@ export class ProductListComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.getProductDetailDialog(data);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      if (result) {
+        this.getProductList();
+      }
     });
+  }
+
+  onProductPage($event: PageEvent) {
+    this.productPage = $event;
+    this.logger.log(this.productPage);
+    this.getProductList();
   }
 
   private getCategoryList() {
