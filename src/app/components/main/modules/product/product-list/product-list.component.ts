@@ -11,6 +11,7 @@ import { PCColumn, PColumn, Table } from '@enums/.';
 import { Mode } from '@interfaces/mode.interface';
 import { ProductCategoryDetailData } from '@shared-components/product-category-detail-dialog/index';
 import { ProductDetailData } from '@shared-components/product-detail-dialog';
+import * as _ from "lodash";
 import { catchError, forkJoin, tap } from 'rxjs';
 
 @Component({
@@ -37,7 +38,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   @ViewChild('CategoryTable') CategoryTable!: MatTable<ProductCategory>;
   private categorySub;
 
-  readonly productColumns = [this.IndexColumn, PCColumn.type, PColumn.label, PColumn.value];
+  readonly productColumns = [this.IndexColumn, PCColumn.type, PColumn.label, PColumn.value, this.ColumnOperation];
   readonly categoryColumns = [this.ColumnOperation, PCColumn.order, PCColumn.type];
 
   ui = {
@@ -112,6 +113,21 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.getProductList();
+      }
+    });
+  }
+
+  editProduct(index: number) {
+    this.logger.table(`Edit Product`, this.productList[index]);
+    const data: ProductDetailData = {
+      mode: Mode.Edit,
+      product: _.cloneDeep(this.productList[index])
+    }
+    const dialogRef = this.dialogService.getProductDetailDialog(data);
+
+    dialogRef.afterClosed().subscribe((refresh: boolean) => {
+      if (refresh) {
         this.getProductList();
       }
     });
@@ -197,7 +213,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   editCategory(index: number) {
-    this.logger.table(`edit category`, this.categoryList[index]);
+    this.logger.table(`Edit Category`, this.categoryList[index]);
     const data: ProductCategoryDetailData = {
       mode: Mode.Edit,
       productCategory: this.categoryList[index]

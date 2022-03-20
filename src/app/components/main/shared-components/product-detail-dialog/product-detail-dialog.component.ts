@@ -48,6 +48,10 @@ export class ProductDetailDialogComponent implements OnInit {
       [PColumn.value]: new FormControl('', [Validators.required]),
     });
 
+    if (this.data.mode === Mode.Edit) {
+      this.form.patchValue(this.data.product);
+    }
+
     this.getCategories();
   }
 

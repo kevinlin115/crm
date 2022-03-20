@@ -29,6 +29,12 @@ export class ProductService {
           ${PCColumn.type}
         )
       `, { count: 'exact' })
+      .order(
+        SColumn.created_at,
+        {
+          ascending: false
+        }
+      );
     if (range) {
       api = api.range(range.from, range.to);
     }
